@@ -1,0 +1,975 @@
+<!-- /*
+* Bootstrap 5
+* Template Name: Furni
+* Template Author: Untree.co
+* Template URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{customer-template/fragments/fragment :: page_head}">
+</head>
+<body>
+
+<!-- Start Header/Navigation -->
+<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/haven/trang-chu}">
+            <img th:src="@{/images/wingman.png}"
+                 style="height: 50px; width: 50px;">
+            <a class="navbar-brand"
+               th:href="@{/haven/trang-chu}">Haven<span>.</span></a></a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsFurni">
+            <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                <li><a class="nav-link" th:href="@{/haven/trang-chu}">Trang chủ</a></li>
+                <li class="active ">
+                    <a class="nav-link" th:href="@{/haven/cua-hang}">Sản phẩm</a>
+                </li>
+                <li><a class="nav-link" th:href="@{/haven/dich-vu}">Dịch vụ</a></li>
+<!--                <li><a class="nav-link" th:href="@{/wingman/thong-tin}">Thông tin</a></li>-->
+<!--                <li><a class="nav-link" th:href="@{/wingman/lien-he}">Liên hệ</a></li>-->
+                <li><a class="nav-link" th:href="@{/haven/tra-cuu-don-hang}">Tra cứu đơn hàng</a></li>
+
+            </ul>
+
+            <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                <li>
+                    <div class="dropdown show" style="padding-top: 5px">
+                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false">
+                            <img src="/../images/user.svg">
+                        </a>
+                        <div th:if="${checkSecurity}">
+                            <!-- If checkSecurity is true, display the dropdown menu -->
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" th:href="'/haven/thong-tin-cua-toi'">Tài khoản của tôi</a>
+                                <a class="dropdown-item" th:href="'/haven/hoa-don-cua-toi'">Đơn mua</a>
+                                <a class="dropdown-item" th:href="'/logout'">Đăng xuất</a>
+                            </div>
+                        </div>
+                        <div th:unless="${checkSecurity}">
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" th:href="'/haven/hoa-don-cua-toi'">Đăng nhập</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a class="nav-link"  th:href="@{/haven/cart}"><img src="/../images/cart.svg" style="padding-bottom: 5px"></a>
+                </li>
+                <style>
+                    /* Dropdown Button */
+                    /* Ẩn dropdown menu mặc định */
+                    .dropdown-menu {
+                        display: none;
+                        opacity: 0;
+                        position: absolute;
+                        top: 100%; /* Hiển thị menu bên dưới button */
+                        background-color: #fff; /* Màu nền của dropdown */
+                        transition: opacity 0.3s ease; /* Hiệu ứng mượt mà cho opacity */
+                    }
+
+                    /* Hiển thị dropdown menu khi hover vào .dropdown */
+                    .dropdown:hover .dropdown-menu {
+                        display: block;
+                        opacity: 1;
+                    }
+
+                    /* Hiệu ứng transition khi hiển thị dropdown */
+                    .dropdown-menu {
+                        transform: translateY(-10px); /* Di chuyển dropdown lên trên */
+                        transition: transform 0.3s ease, opacity 0.3s ease;
+                    }
+
+                    .dropdown:hover .dropdown-menu {
+                        transform: translateY(0); /* Đặt lại vị trí ban đầu */
+                    }
+
+                    .dropdown-toggle {
+                        cursor: pointer;
+                        padding: 0;
+                        border: none;
+                        background: transparent;
+                        outline: none;
+                        height: 100%; /* Đặt chiều cao của dropdown button là 100% */
+                    }
+
+                    /* Dropdown Menu */
+                    .dropdown-menu {
+                        width: auto;
+                        box-shadow: none;
+                    }
+
+                    /* Dropdown Items */
+                    .dropdown-item {
+                        display: block;
+                        width: 100%;
+                        box-sizing: border-box;
+                        text-align: left;
+                    }
+
+                    /* Cart Icon */
+                </style>
+            </ul>
+
+        </div>
+    </div>
+
+</nav>
+<!-- End Header/Navigation -->
+
+<!-- Start Hero Section -->
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1>Haven Shoes</h1>
+                    <p class="mb-4">Nắng đã có mũ, mưa đã có ô, em đã có giày đẹp chưa, ghé Wingman liền nhé!</p>
+                    <p><a th:href="@{/haven/cua-hang}" class="btn btn-secondary me-2">Mua ngay</a>
+                        <a th:href="@{/haven/dich-vu}"
+                           class="btn btn-white-outline">Khám phá</a></p>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="hero-img-wrap">
+                    <img src="../images/bannerGiay.png" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scro">
+    </div>
+    </div>
+<!-- End Hero Section -->
+<br>
+
+<div class="untree_co-section product-section before-footer-section">
+        <h1 style="color: #0c0e12; text-align: center; font-family: 'Montserrat Medium'"><b>Sản phẩm</b></h1>
+
+    <div class="container">
+        <br>
+        <div class="productfinder">
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const productFinderDiv = document.querySelector('.scro');
+                    const errorMessage = document.querySelector('.error-message');
+                    const arr = document.querySelector('.arr');
+
+                    if (errorMessage) {
+                        arr.scrollIntoView({ behavior: 'smooth' });
+                    } else if (productFinderDiv) {
+                        productFinderDiv.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            </script>
+            <div class="pf-filter-item">
+
+                <form class="pf-controls" id="pf-Filters" th:action="@{/wingman/cua-hang}">
+                    <h4>Tìm kiếm</h4>
+                    <fieldset class="filter-group pf-search">
+                        <input type="text" id="tenSanPham" name="tenSanPham" th:value="${tenSanPham}" class="powerText"
+                               placeholder="Tìm kiếm theo tên sản phẩm" style="width: 250px"/>
+                    </fieldset>
+                    <h4>Sắp Xếp</h4>
+                    <fieldset class="filter-group pf-search">
+                        <select class="form-select" aria-label="Default select example" name="sortField" id="sortField"
+                                style="font-size: medium;width: 250px">
+                            <option class="option">Chọn sắp xếp</option>
+                            <option class="option" th:value="sapXepTheoGiaBanCaoDenThap"
+                                    th:selected="${sortField == 'sapXepTheoGiaBanCaoDenThap'}">Giá cao đến thấp
+                            </option>
+                            <option class="option" th:value="sapXepTheoGiaBanThapDenCao"
+                                    th:selected="${sortField == 'sapXepTheoGiaBanThapDenCao'}">Giá thấp đến cao
+                            </option>
+                            <option class="option" th:value="sapXepTheoTen"
+                                    th:selected="${sortField == 'sapXepTheoTen'}">Tên sản phẩm
+                            </option>
+                            <option class="option" th:value="sapXepTheoNgayTao"
+                                    th:selected="${sortField == 'sapXepTheoNgayTao'}">Sản phẩm mới nhất
+                            </option>
+                        </select></fieldset>
+                    <h4>Thương Hiệu</h4>
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="pf-checkbox" th:each="thuongHieu : ${thuongHieus}">
+                            <input type="checkbox" th:checked="${listThuongHieu.contains(thuongHieu.ten)}"
+                                   name="tenThuongHieu" id="tenThuongHieu" th:value="${thuongHieu.ten}"
+                                   class="segment"/>
+                            <label th:text="${thuongHieu.ten}"></label>
+                        </div>
+                    </fieldset>
+                    <h4>Màu Sắc</h4>
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="pf-checkbox" th:each="mauSac : ${mauSacs}">
+                            <input type="checkbox" th:checked="${listMauSac.contains(mauSac.ten)}" name="tenMauSac"
+                                   id="tenMauSac" th:value="${mauSac.ten}" class="segment"/>
+                            <label th:text="${mauSac.ten}"></label>
+                        </div>
+                    </fieldset>
+                    <h4>Kích Cỡ</h4>
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="pf-checkbox" th:each="kichThuoc : ${kichThuocs}">
+                            <input type="checkbox" th:checked="${listKichThuoc.contains(kichThuoc.ten)}"
+                                   name="tenKichThuoc" id="tenKichThuoc" th:value="${kichThuoc.ten}" class="seating"/>
+                            <label th:text="${kichThuoc.ten}"></label>
+                        </div>
+                    </fieldset>
+                    <h4>Loại Đế</h4>
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="pf-checkbox" th:each="deGiay : ${deGiays}">
+                            <input type="checkbox" th:checked="${listDeGiay.contains(deGiay.ten)}" name="tenDeGiay"
+                                   id="tenDeGiay" th:value="${deGiay.ten}" class="power"/>
+                            <label th:text="${deGiay.ten}"></label>
+                        </div>
+                    </fieldset>
+                    <h4>Lót Giày</h4>
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="pf-checkbox" th:each="lotGiay : ${lotGiays}">
+                            <input type="checkbox" th:checked="${listLotGiay.contains(lotGiay.ten)}" name="tenLotGiay"
+                                   id="tenLotGiay" th:value="${lotGiay.ten}" class="power"/>
+                            <label th:text="${lotGiay.ten}"></label>
+                        </div>
+                    </fieldset>
+                    <h4>Cổ Giày</h4>
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="pf-checkbox" th:each="coGiay : ${coGiays}">
+                            <input type="checkbox" th:checked="${listCoGiay.contains(coGiay.ten)}" name="tenCoGiay"
+                                   id="tenCoGiay" th:value="${coGiay.ten}" class="power"/>
+                            <label th:text="${coGiay.ten}"></label>
+                        </div>
+                    </fieldset>
+                    <div class="arr"></div>
+                    <h4>Dòng Sản Phẩm</h4>
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="pf-checkbox" th:each="dongSp : ${dongSps}">
+                            <input type="checkbox" th:checked="${listDongSanPham.contains(dongSp.ten)}"
+                                   name="tenDongSanPham" id="tenDongSanPham" th:value="${dongSp.ten}" class="power"/>
+                            <label th:text="${dongSp.ten}"></label>
+                        </div>
+                    </fieldset>
+                    <h4>Khoảng Giá</h4>
+
+                    <fieldset class="filter-group pf-checkboxes">
+                        <div class="input-container">
+                            <input type="hidden" id="minGiaValue" name="minGia" th:value="${minGia}"/>
+                            <input type="hidden" id="maxGiaValue" name="maxGia" th:value="${maxGia}"/>
+                            <input type="text" id="minGia" class="powerText" placeholder="Từ ..."
+                                   oninput="formatCurrency('minGia')" />
+                            <input type="text" id="maxGia" class="powerText" placeholder="Đến ..."
+                                   oninput="formatCurrency('maxGia')"/>
+
+                            <div th:if="${not #strings.isEmpty(err)}" class="error-message">
+                                <p style="color: red" th:text="${err}"></p>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <style>
+                        h4 {
+                            margin-top: 20px;
+                        }
+
+                        .filter-group {
+                            border: 1px solid #ccc;
+                            padding: 10px;
+                            margin-bottom: 20px;
+                            max-height: 200px; /* Set the maximum height before a scrollbar appears */
+                            overflow-y: auto; /* Add vertical scrollbar if content overflows */
+                            border-bottom: 10px solid #701010; /* Thêm đường kẻ ngăn cách dưới */
+
+                        }
+
+                        .powerText {
+                            height: 40px; /* Điều chỉnh kích thước chiều rộng ở đây */
+                            margin-top: 15px;
+                            width: 200px;
+                        }
+
+                        .filter-group {
+                            border: 1px solid #ccc;
+                            padding: 10px;
+                            margin-bottom: 20px;
+                        }
+
+                        .filter-group h4 {
+                            margin-top: 0;
+                            font-size: 14px; /* Adjust the font size as needed */
+                        }
+
+                        .input-container {
+                            display: flex;
+                            flex-direction: column;
+                        }
+
+                        .input-container input[type="number"] {
+                            width: 150px; /* Adjust the width as needed */
+                            padding: 5px;
+                            margin: 5px;
+                            border: 1px solid #ddd;
+                            border-radius: 3px;
+                            font-size: 12px; /* Adjust the font size as needed */
+                        }
+
+                        /* Additional styling for the input:focus to highlight when it's active */
+                        .input-container input[type="number"]:focus {
+                            outline: none;
+                            border-color: #3498db;
+                            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+                        }
+
+                    </style>
+                    <script>
+                        var errorMessage = document.querySelector('.error-message');
+
+                        if (errorMessage) {
+                            setTimeout(function () {
+                                errorMessage.style.display = 'none';
+                            }, 10000);
+                        }
+                    </script>
+                    <div class="button-container">
+                        <a class="button-style" th:href="@{/haven/reset}">
+                            <i class="fas fa-trash"></i> Xóa bộ lọc
+                        </a>
+                        <button class="button-style" type="submit">
+                            <i class="fas fa-filter"></i> Lọc
+                        </button>
+                    </div>
+
+                    <style>
+                        .button-container {
+                            display: flex;
+                            align-items: center;
+                        }
+
+                        .button-style {
+                            font-weight: bold;
+                            height: 45px;
+                            display: flex;
+                            align-items: center;
+                            padding: 10px 20px;
+                            border: 1px solid #ccc;
+                            border-radius: 5px;
+                            text-decoration: none;
+                            color: #333;
+                            background-color: #b8afaf;
+                            font-size: 14px;
+                            margin-right: 20px;
+                        }
+
+                        .button-style:last-child {
+                            margin-right: 0;
+                        }
+                    </style>
+
+            </div>
+            <div class="pf-wrapper">
+                <div id="pf-Container" class="pf-container live-search-list">
+                    <div class="col-md-4" th:each="ctsp : ${listCTSP}" style="margin-right: 20px">
+                        <div class="product-item" style="margin-bottom: 50px ;">
+                            <a th:href="@{'/haven/chi-tiet-san-pham/' + ${ctsp.id}}" style="text-decoration: none">
+                                <img th:src="@{'../images/' + ${ctsp.anhChinh}}" class="img-fluid product-thumbnail"
+                                     style="width: 200px; height: 180px;">
+
+                                <h3 class="product-title"
+                                    th:text="${ctsp.tenSanPham +' ['+ ctsp.tenDongSanPham +'- '+ ctsp.tenDeGiay +'- '+ ctsp.tenCoGiay +'- '+ ctsp.tenLotGiay+']'}"></h3>
+                                <div th:if="${ctsp.giaMacDinh == ctsp.giaBan}">
+                                    <strong  class="product-price"
+                                            th:text="${#numbers.formatDecimal(ctsp.giaBan, 0, 'POINT', 0, 'COMMA') + ' VND'}"></strong>
+                                </div>
+                                <div th:if="${ctsp.giaMacDinh != ctsp.giaBan}">
+                                    <strong class="product-price">
+                                        <s style="font-size: small" th:text="${#numbers.formatDecimal(ctsp.giaMacDinh, 0, 'POINT', 0, 'COMMA') + ' VND'}"></s>
+                                    </strong>
+                                    <strong class="product-price" style=" color: #bf1222;"
+                                            th:text="${#numbers.formatDecimal(ctsp.giaBan, 0, 'POINT', 0, 'COMMA') + ' VND'}" >
+                                    </strong>
+                                </div>
+
+                            </a>
+                            <a>
+                    <span class="icon-cross">
+                                <img src="../images/cross.svg" class="img-fluid">
+                            </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="pagination-container" style="margin: auto">
+            <div class="pagination">
+                <button type="submit" class="page-item" name="page" value="0" th:disabled="${page == 0}">
+                    <i class="fas fa-angle-double-left"></i> <!-- Icon double left arrow -->
+                </button>
+                <button type="submit" class="page-item" name="page" th:disabled="${page <= 0}" th:value="${page - 1}">
+                    <i class="fas fa-angle-left"></i> <!-- Icon left arrow -->
+                </button>
+                <button type="submit" class="page-item" name="page" th:value="${totalPages - 1}" th:text="${page + 1}"></button>
+                <button type="submit" class="page-item" name="page" th:disabled="${page >= totalPages - 1}" th:value="${page + 1}">
+                    <i class="fas fa-angle-right"></i> <!-- Icon right arrow -->
+                </button>
+                <button type="submit" class="page-item" th:disabled="${page >= totalPages - 1}" name="page" th:value="${totalPages - 1}">
+                    <i class="fas fa-angle-double-right"></i> <!-- Icon double right arrow -->
+                </button>
+                <input type="hidden" name="pageSize" th:value="${pageSize}" />
+            </div>
+        </div>
+        <style>
+            .pagination-container {
+                display: flex;
+                justify-content: center;
+                margin: 20px auto; /* Khoảng cách nằm giữa trang */
+                width: 80%; /* Ví dụ: Thiết lập chiều rộng cụ thể */
+            }
+
+
+            .pagination {
+                display: flex;
+                gap: 5px; /* Khoảng cách giữa các nút */
+            }
+
+            .page-item {
+                padding: 8px 16px; /* Kích thước của nút */
+                background-color: #f0f0f0; /* Màu nền */
+                border: 1px solid #ccc; /* Viền */
+                color: #333; /* Màu chữ */
+                cursor: pointer;
+                text-decoration: none;
+                border-radius: 4px;
+            }
+
+            .page-item:hover {
+                background-color: #e0e0e0; /* Màu nền khi di chuột qua */
+            }
+
+        </style>
+        </form>
+
+        <br>
+        <div class="box">
+            <hr>
+        </div>
+        <br>
+
+        <div class="row">
+
+            <!-- Start Column 1 -->
+            <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
+                <br>
+                <h1 class="mb-4 section-title" style="font-family: 'Montserrat Medium'">Custom độc đáo</h1>
+                <p class="mb-4">Bạn muốn tìm kiếm sự khác lạ trong thiết kế. Đây là những đôi sneaker được custom lại
+                    đầy cá tính và mới mẻ.</p>
+            </div>
+            <!-- End Column 1 -->
+
+            <!-- Start Column 2 -->
+            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0" th:each="ctspCustom : ${list3Custom}">
+                <div class="product-item">
+                    <a th:href="@{'/haven/chi-tiet-san-pham/' + ${ctspCustom.getId()}}" style="text-decoration: none">
+                        <img th:src="@{'../images/' + ${ctspCustom.getAnh_chinh}}" class="img-fluid product-thumbnail"
+                             style="width: 200px; height: 180px;">
+                        <h3 class="product-title"
+                            th:text="${ctspCustom.getTenSp() +' ['+ ctspCustom.getTenDongSp() +' -'+ ctspCustom.getTenDe_giay() +' -'+ ctspCustom.getTenCo_giay() +' -'+ ctspCustom.getTenLot_giay()}+']'"></h3>
+                        <strong class="product-price"
+                                th:text="${#numbers.formatDecimal(ctspCustom.getGia_ban(), 0, 'POINT', 0, 'COMMA') + ' VND'}"></strong>
+                    </a>
+                    <a>
+                    <span class="icon-cross">
+								<img src="../images/cross.svg" class="img-fluid">
+							</span>
+                    </a>
+                </div>
+            </div>
+            <!-- End Column 2 -->
+
+        </div>
+
+        <!-- TIÊU ĐỀ 4 -->
+        <br>
+        <div class="box">
+            <hr>
+        </div>
+        <br>
+        <div class="row">
+
+            <!-- Start Column 2 -->
+
+            <!-- End Column 2 -->
+
+            <!-- Start Column 1 -->
+            <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
+                <br>
+                <h1 class="mb-4 section-title" style="font-family: 'Montserrat Medium'">Phiên bản giới hạn</h1>
+                <p class="mb-4">Những phiên bản đặc biệt chỉ được sản xuất với số lượng có hạn. Những sản phẩm không thể
+                    bỏ lỡ của các collector</p>
+            </div>
+            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0" th:each="ctspLimited : ${list3Limited}">
+                <div class="product-item">
+                    <a th:href="@{'/haven/chi-tiet-san-pham/' + ${ctspLimited.getId()}}"
+                       style="text-decoration: none">
+                        <img th:src="@{'../images/' + ${ctspLimited.getAnh_chinh}}" class="img-fluid product-thumbnail"
+                             style="width: 200px; height: 180px;">
+
+                        <h3 class="product-title"
+                            th:text="${ctspLimited.getTenSp() +' ['+ ctspLimited.getTenDongSp() +' -'+ ctspLimited.getTenDe_giay() +' -'+ ctspLimited.getTenCo_giay() +' -'+ ctspLimited.getTenLot_giay()+']'}"></h3>
+                        <strong class="product-price"
+                                th:text="${#numbers.formatDecimal(ctspLimited.getGia_ban(), 0, 'POINT', 0, 'COMMA') + ' VND'}"></strong>
+                    </a>
+                    <a>
+                    <span class="icon-cross">
+								<img src="../images/cross.svg" class="img-fluid">
+							</span>
+                    </a>
+                </div>
+            </div>
+            <!-- End Column 1 -->
+        </div>
+
+        <br>
+
+        <div class="box" style="margin-bottom: -70px">
+            <hr>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Start Footer Section -->
+<footer class="footer-section">
+    <div class="container relative">
+
+<!--        <div class="sofa-img">-->
+<!--            <img src="../images/WingMan-black.png" style="height: 200px; width: 200px; margin-top: 150px;" alt="Image"-->
+<!--                 class="img-fluid">-->
+<!--        </div>-->
+
+<!--        <div class="row">-->
+<!--            <div class="col-lg-8">-->
+<!--                <div class="subscription-form">-->
+<!--                    <h3 class="d-flex align-items-center"><span class="me-1"><img src="../images/envelope-outline.svg"-->
+<!--                                                                                  alt="Image"-->
+<!--                                                                                  class="img-fluid"></span><span>Đăng ký nhận thông tin khuyến Mại</span>-->
+<!--                    </h3>-->
+
+<!--                    <form action="#" class="row g-3">-->
+<!--                        <div class="col-auto">-->
+<!--                            <input type="text" class="form-control" placeholder="Họ và tên">-->
+<!--                        </div>-->
+<!--                        <div class="col-auto">-->
+<!--                            <input type="email" class="form-control" placeholder="Email">-->
+<!--                        </div>-->
+<!--                        <div class="col-auto">-->
+<!--                            <button class="btn btn-primary">-->
+<!--                                <span class="fa fa-paper-plane"></span>-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </form>-->
+
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <div class="row g-5 mb-5">
+            <div class="col-lg-4">
+                <div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Haven<span>.</span></a></div>
+                <p class="mb-4">Cảm ơn bạn đã tin tưởng ghé qua và lựa chọn Haven.</p>
+
+                <ul class="list-unstyled custom-social">
+                    <li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="row links-wrap">
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Liên hệ</a></li>
+                            <li><a href="#">Dịch vụ</a></li>
+                            <li><a href="#">Thông tin</a></li>
+                            <li><a href="#">Trung tâm trợ giúp</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Vận chuyển</a></li>
+                            <li><a href="#">Khu vực</a></li>
+                            <li><a href="#">Kênh bán hàng</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Hướng dẫn mua hàng</a></li>
+                            <li><a href="#">Đội ngũ</a></li>
+                            <li><a href="#">Trả hàng</a></li>
+                            <li><a href="#">Bảo mậtt</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Chăm sóc khách hàng</a></li>
+                            <li><a href="#">Chính sách bảo hành</a></li>
+                            <li><a href="#">Hoàn tiền</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="border-top copyright">
+            <div class="row pt-4">
+                <div class="col-lg-6">
+                    <p class="mb-2 text-center text-lg-start">Chủ sở hữu &copy;
+                        <script>document.write(new Date().getFullYear());</script> &mdash;
+                        Thiết kế tâm huyết của nhóm <a href="">SD-05</a> <a hreff=""></a>
+                        <!-- License information: https://untree.co/license/ -->
+                    </p>
+                </div>
+
+                <div class="col-lg-6 text-center text-lg-end">
+                    <ul class="list-unstyled d-inline-flex ms-auto">
+                        <li class="me-4"><a href="#">Dự án tốt nghiệp: </a></li>
+                        <li><a href="#">Xây dựng Website bán giày thể thao Haven</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<style>
+    .product-item {
+        /*border: 1px solid #000;*/
+        /*border-radius: 10px; !* Bo góc border *!*/
+        padding: 20px;
+        width: 200px; /* Chiều rộng cố định */
+        height: 400px; /* Chiều cao cố định */
+        position: relative; /* Cho phép sử dụng top và left */
+        /*background-color: #ececec; !* Màu nền khác để làm nổi bật *!*/
+        transition: transform 0.3s ease; /* Thêm hiệu ứng chuyển động khi hover */
+    }
+
+    .product-item:hover {
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Hiệu ứng đổ bóng khi di chuột qua */
+        transition: box-shadow 0.3s ease; /* Tạo hiệu ứng chuyển động mượt mà */
+        transform: scale(1.05); /* Phóng to sản phẩm khi di chuột qua */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Hiệu ứng đổ bóng khi hover */
+
+    }
+    .productfinder {
+        width: 100%;
+        height: 100%;
+        padding: 0 30px;
+        margin-left: 3%;
+        display: table;
+    }
+
+    .productfinder > div {
+        display: table-cell;
+        float: left;
+    }
+
+    .productfinder h4 {
+        font-weight: 700;
+        margin-bottom: .5em;
+    }
+
+    .productfinder label {
+        font-weight: 300;
+    }
+
+    .productfinder input[type="text"] {
+        font-family: 'helvetica';
+        font-size: 14px;
+        border: 1px solid #68b8c4;
+        padding: .5em;
+        border-radius: 2px;
+    }
+
+    .productfinder input[type="text"]:focus {
+        outline: 0 none;
+        border-color: #68b8c4;
+    }
+
+    .productfinder button {
+        display: inline-block;
+        vertical-align: top;
+        padding: .4em .8em;
+        margin: 0;
+        background: #68b8c4;
+        border: 0;
+        color: #333;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .productfinder button:focus {
+        outline: 0 none;
+    }
+
+    .productfinder .pf-controls {
+        padding: 2%;
+    }
+
+    .productfinder .filter-group {
+        display: block;
+        margin: 0 1em 0 0;
+        border: 0;
+        padding: .5em;
+    }
+
+    .productfinder .pf-checkbox {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        margin-bottom: 8px;
+    }
+
+    .productfinder .pf-checkbox input[type="checkbox"] {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+        margin: 0;
+        opacity: 0;
+        z-index: 1;
+    }
+
+    .productfinder .pf-checkbox label {
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+        padding-left: 1.5em;
+    }
+
+    .productfinder .pf-checkbox label:before,
+    .productfinder .pf-checkbox label:after {
+        content: '';
+        display: block;
+        position: absolute;
+    }
+
+    .productfinder .pf-checkbox label:before {
+        left: 0;
+        top: 0;
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+        background: #ddd;
+        border-radius: 3px;
+    }
+
+    .productfinder .pf-checkbox label:after {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        background: #3b5d50;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .productfinder .pf-checkbox input:checked ~ label:after {
+        opacity: 1;
+    }
+
+    .productfinder .pf-checkbox input:focus ~ label:before {
+        background: #eee;
+    }
+
+    .productfinder .pf-container .fail-message {
+        text-align: center;
+        pointer-events: none;
+        vertical-align: middle;
+        font-weight: bold;
+        font-size: large;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+    }
+
+    .productfinder .pf-filter-item {
+        width: 300px;
+    }
+
+    .productfinder .pf-wrapper {
+        width: calc(100% - 300px);
+    }
+
+    .productfinder .pf-container > div:not(.fail-message) {
+        width: calc(25% - 50px);
+        float: left;
+    }
+
+    .productfinder .pf-container {
+        display: -ms-flexbox !important;
+        display: flex !important;
+        -ms-flex-wrap: wrap !important;
+        flex-wrap: wrap !important;
+        -ms-flex-line-pack: start !important;
+        align-content: flex-start !important;
+    }
+
+    .productfinder .pf-container .pf-card {
+        text-align: center;
+        border: 1px solid transparent;
+        /*box-shadow: 0 0 15px rgba(1, 65, 137, 0.23);*/
+        padding: 10px;
+        margin: 10px;
+        position: relative;
+        padding-bottom: 35px;
+    }
+
+    .productfinder .pf-container .pf-card .pf-card-header {
+    }
+
+    .productfinder .pf-container .pf-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+
+    }
+
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* Add any additional styling for the container if needed */
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* Add any specific pagination styles */
+    }
+
+    /* Rest of your pagination styling */
+    .pagination a {
+        color: black;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        border: 1px solid #ddd;
+        margin: 0 4px;
+    }
+
+    .pagination a.active {
+        background-color: #3b5d50;
+        color: white;
+        border: 1px solid #dae2df;
+    }
+
+    .pagination a:hover:not(.active) {
+        background-color: #ddd;
+    }
+
+    /* Phần tiêu đề 'Tìm kiếm' và dropdown 'Chọn sắp xếp' */
+    .filter-group.pf-search h4,
+    #sortField {
+        color: #3b5d50; /* Màu sắc nổi bật */
+    }
+
+    /* Phần checkbox 'Màu Sắc', 'Kích Cỡ',... */
+    .filter-group.pf-checkboxes h4 {
+        color: #3b5d50; /* Màu sắc nổi bật */
+    }
+
+    /* Viền cho các filter group */
+    .filter-group {
+        border-color: #3b5d50; /* Màu viền nổi bật */
+    }
+
+    /* Dropdown arrow */
+    #sortField {
+        /* ... (Styles của dropdown arrow hiện tại) */
+        border-color: #3b5d50; /* Màu viền dropdown nổi bật khi hover */
+    }
+
+    /* Tiêu đề và giá sản phẩm */
+    .product-item .product-title {
+        font-size: 18px; /* Kích thước lớn hơn */
+        color: #3b5d50; /* Màu sắc nổi bật */
+    }
+
+    .product-item .product-price {
+        font-weight: bold; /* Đậm hơn */
+        color: #333; /* Màu sắc */
+    }
+
+    /* Hiệu ứng hover cho ảnh sản phẩm */
+    .product-item img.product-thumbnail {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .product-item img.product-thumbnail:hover {
+        transform: scale(1.1); /* Hiệu ứng phóng to khi hover */
+    }
+
+    /* Nút thêm vào giỏ hàng */
+    .product-item a.icon-cross img {
+        width: 30px; /* Kích thước lớn hơn */
+        height: 30px; /* Kích thước lớn hơn */
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .product-item a.icon-cross img:hover {
+        transform: scale(1.2); /* Hiệu ứng phóng to khi hover */
+    }
+
+</style>
+<script>
+    function formatCurrency(fieldId) {
+        let inputValue = document.getElementById(fieldId).value.replace(/\D/g, '');
+        let formattedValue = formatCurrencyValue(inputValue);
+        document.getElementById(fieldId).value = formattedValue;
+        document.getElementById(fieldId + "Value").value = inputValue;
+    }
+
+    function formatCurrencyValue(value) {
+        let integerValue = Number.parseFloat(value);
+        if (isNaN(integerValue)) {
+            return "0";
+        }
+        return integerValue.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    window.onload = function () {
+        let minGiaValue = document.getElementById("minGiaValue").value;
+        let maxGiaValue = document.getElementById("maxGiaValue").value;
+
+        // Set default values to 0 if hidden inputs are empty
+        document.getElementById("minGia").value = minGiaValue !== "" ? formatCurrencyValue(minGiaValue) : "0";
+        document.getElementById("maxGia").value = maxGiaValue !== "" ? formatCurrencyValue(maxGiaValue) : "0";
+    };
+
+
+
+
+</script>
+<!-- End Footer Section -->
+</body>
+</html>

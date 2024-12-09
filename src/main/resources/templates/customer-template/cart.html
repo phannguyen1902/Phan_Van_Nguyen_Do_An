@@ -1,0 +1,656 @@
+<!-- /*
+* Bootstrap 5
+* Template Name: Furni
+* Template Author: Untree.co
+* Template URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+            name="viewport"
+    />
+    <meta content="Untree.co" name="author"/>
+    <link href="../../images/WingMan-black.png" rel="icon"/>
+
+    <meta content="" name="description"/>
+    <meta content="bootstrap, bootstrap4" name="keywords"/>
+
+    <!-- Bootstrap CSS -->
+    <link href="/../css/customer/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+            rel="stylesheet"/>
+    <link href="/../css/customer/style.css" rel="stylesheet"/>
+    <link href="/../css/customer/tiny-slider.css" rel="stylesheet"/>
+    <link href="/../css/customer/shop.css" rel="stylesheet"/>
+    <link href="/../css/customer/detail.css" rel="stylesheet"/>
+    <title>
+        Haven
+    </title>
+</head>
+<body>
+<!-- Start Header/Navigation -->
+<nav arial-label="Furni navigation bar" class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/haven/trang-chu}">
+            <img style="height: 50px; width: 50px;"
+                 th:src="@{/images/wingman.png}">
+            <a class="navbar-brand"
+               th:href="@{/haven/trang-chu}">Haven<span>.</span></a></a>
+
+        <button aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+                data-bs-target="#navbarsFurni" data-bs-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsFurni">
+            <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                <li><a class="nav-link" th:href="@{/haven/trang-chu}">Trang chủ</a></li>
+                <li><a class="nav-link" th:href="@{/haven/cua-hang}">Sản phẩm</a></li>
+                <li><a class="nav-link" th:href="@{/haven/dich-vu}">Dịch vụ</a></li>
+<!--                <li><a class="nav-link" th:href="@{/wingman/thong-tin}">Thông tin</a></li>-->
+<!--                <li><a class="nav-link" th:href="@{/wingman/lien-he}">Liên hệ</a></li>-->
+                <li><a class="nav-link" th:href="@{/haven/tra-cuu-don-hang}">Tra cứu đơn hàng</a></li>
+
+            </ul>
+
+            <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                <li>
+                    <div class="dropdown show" style="padding-top: 5px">
+                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                           aria-expanded="false">
+                            <img src="/../images/user.svg">
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" th:href="'/haven/thong-tin-cua-toi'">Tài khoản của tôi</a>
+                            <a class="dropdown-item" th:href="'/haven/hoa-don-cua-toi'">Đơn mua</a>
+                            <a class="dropdown-item" th:href="'/logout'">Đăng xuất</a>
+                        </div>
+                    </div>
+                </li>
+                <li><a class="nav-link" th:href="@{/haven/cart}"><img src="/../images/cart.svg"
+                                                                        style="padding-bottom: 5px"></a>
+                </li>
+                <style>
+                    /* Dropdown Button */
+                    /* Ẩn dropdown menu mặc định */
+                    .dropdown-menu {
+                        display: none;
+                        opacity: 0;
+                        position: absolute;
+                        top: 100%; /* Hiển thị menu bên dưới button */
+                        background-color: #fff; /* Màu nền của dropdown */
+                        transition: opacity 0.3s ease; /* Hiệu ứng mượt mà cho opacity */
+                    }
+
+                    /* Hiển thị dropdown menu khi hover vào .dropdown */
+                    .dropdown:hover .dropdown-menu {
+                        display: block;
+                        opacity: 1;
+                    }
+
+                    /* Hiệu ứng transition khi hiển thị dropdown */
+                    .dropdown-menu {
+                        transform: translateY(-10px); /* Di chuyển dropdown lên trên */
+                        transition: transform 0.3s ease, opacity 0.3s ease;
+                    }
+
+                    .dropdown:hover .dropdown-menu {
+                        transform: translateY(0); /* Đặt lại vị trí ban đầu */
+                    }
+
+                    .dropdown-toggle {
+                        cursor: pointer;
+                        padding: 0;
+                        border: none;
+                        background: transparent;
+                        outline: none;
+                        height: 100%; /* Đặt chiều cao của dropdown button là 100% */
+                    }
+
+                    /* Dropdown Menu */
+                    .dropdown-menu {
+                        width: auto;
+                        box-shadow: none;
+                    }
+
+                    /* Dropdown Items */
+                    .dropdown-item {
+                        display: block;
+                        width: 100%;
+                        box-sizing: border-box;
+                        text-align: left;
+                    }
+
+                    /* Cart Icon */
+                </style>
+            </ul>
+
+        </div>
+    </div>
+
+</nav>
+<!-- End Header/Navigation -->
+
+<!-- Start Hero Section -->
+<h1 style="color: #000000; text-align: center; padding-top: 100px">Giỏ hàng</h1>
+<!-- End Hero Section -->
+
+<div class="row mb-5" th:if="${#lists.isEmpty(listGioHangChiTiet)}">
+    <div class="col-md-12" style="text-align: center; padding-top: 50px">
+        <img src="//bizweb.dktcdn.net/100/292/624/themes/758446/assets/empty-cart.png?1701093253480"
+             class="img-responsive center-block" alt="Giỏ hàng trống">
+    </div>
+</div>
+
+<div class="untree_co-section before-footer-section">
+    <div class="container">
+        <div class="row mb-5" th:unless="${#lists.isEmpty(listGioHangChiTiet)}">
+            <div class="col-md-12">
+                <div class="site-blocks-table">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="product-thumbnail">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="selectAllCheckbox"
+                                           onclick="toggleCheckboxes(this)" type="checkbox"
+                                           value="">
+                                </div>
+                            </th>
+                            <th class="product-thumbnail">Ảnh</th>
+                            <th class="product-name">Sản phẩm</th>
+                            <th class="product-price">Giá</th>
+                            <th class="product-quantity">Số lượng</th>
+                            <th class="product-total">Thành tiền</th>
+                            <th class="product-remove">Xóa</th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="gioHangChiTiet : ${listGioHangChiTiet}">
+                        <input type="hidden" name="idGioHangChiTiet" th:value="${gioHangChiTiet.id}">
+                        <tr>
+                            <td>
+                                <div class="form-check">
+                                    <span class="id" hidden th:data-id="${gioHangChiTiet.id}"></span>
+                                    <span class="id-cart" hidden th:data-id="${gioHangChiTiet.gioHang.id}"></span>
+                                    <input class="form-check-input" name="options[]" id="checkboxID"
+                                           th:value="${gioHangChiTiet.id}" onchange="updatePrice(this)" type="checkbox">
+                                </div>
+                            </td>
+                            <td class="product-thumbnail">
+                                <img alt="Image"
+                                     class="img-fluid"
+                                     th:src="@{'../images/' + ${gioHangChiTiet.chiTietSanPham.sanPham.anhChinh}}"
+                                     style="width: 200px; height: 180px;"
+                                />
+                            </td>
+                            <td class="product-name">
+                                <h2 class="h5 text-black name"
+                                    th:text="${gioHangChiTiet.chiTietSanPham.sanPham.ten +' '+
+                                        gioHangChiTiet.chiTietSanPham.sanPham.dongSanPham.ten +' '+
+                                        gioHangChiTiet.chiTietSanPham.deGiay.ten +' '+
+                                        gioHangChiTiet.chiTietSanPham.coGiay.ten +' '+
+                                        gioHangChiTiet.chiTietSanPham.lotGiay.ten}"></h2>
+                            </td>
+                            <td class="price"
+                                th:text="${#numbers.formatDecimal(gioHangChiTiet.chiTietSanPham.giaBan, 0, 'POINT', 0, 'COMMA') + ' VND'}">
+                            </td>
+                            <input type="hidden" class="priceValue" th:value="${gioHangChiTiet.chiTietSanPham.giaBan}">
+                            <td>
+                                <div class="input-group mb-3 d-flex align-items-center quantity-container"
+                                     style="max-width: 100%">
+                                    <div class="tru" onclick="handlerChange(this)">
+                                        <button class="btn btn-outline-black "
+                                                type="button">
+                                            &minus;
+                                        </button>
+                                    </div>
+                                    <input aria-describedby="button-addon1"
+                                           aria-label="Example text with button addon"
+                                           class="form-control text-center quantity-amount"
+                                           placeholder=""
+                                           th:value="${gioHangChiTiet.soLuong}"
+                                           type="text"
+                                           name="soLuong"
+                                           onchange="handleChangeOfInput(this)"
+                                           th:data-max-quantity="${gioHangChiTiet.chiTietSanPham.soLuongTon}"/>
+                                    <div class="cong" onclick="handlerChange(this)">
+                                        <button class="btn btn-outline-black "
+                                                type="button">
+                                            &plus;
+                                        </button>
+                                    </div>
+                                </div>
+                                <span>Số lượng còn lại: [[${gioHangChiTiet.chiTietSanPham.soLuongTon}]]</span>
+                            </td>
+                            <td class="thanhtien"
+                                th:text="${#numbers.formatDecimal(gioHangChiTiet.soLuong * gioHangChiTiet.chiTietSanPham.giaBan, 0, 'POINT', 0, 'COMMA') + ' VND'}">
+                            </td>
+                            <input type="hidden" class="thanhtienValue"
+                                   th:value="${gioHangChiTiet.soLuong * gioHangChiTiet.chiTietSanPham.giaBan}">
+                            <td><a class="btn btn-black btn-sm delete-button"
+                                   th:attr="data-id=${gioHangChiTiet.id}">X</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <a class="btn btn-outline-black btn-sm btn-block" th:href="@{/haven/cua-hang}" type="button">
+                            Tiếp tục mua hàng
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6 pl-5">
+                <div class="row justify-content-end">
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="col-md-12 text-right border-bottom mb-5">
+                                <h3 class="text-black h4 text-uppercase">Giỏ hàng</h3>
+                            </div>
+                        </div>
+
+                        <div class="row mb-5">
+                            <div class="col-md-6">
+                                <span class="text-black">Tổng tiền</span>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <strong class="text-black total">0</strong>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-black btn-lg py-3 btn-block"
+                                        onclick="checkOut()">
+                                    Mua hàng
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Start Footer Section -->
+<footer class="footer-section">
+    <div class="container relative">
+
+        <div class="sofa-img">
+            <img alt="Image" class="img-fluid"
+                 src="/../images/WingMan-black.png"
+                 style="height: 200px; width: 200px; margin-top: 150px;">
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="subscription-form">
+                    <h3 class="d-flex align-items-center"><span class="me-1"><img
+                            alt="Image" class="img-fluid"
+                            src="/../images/envelope-outline.svg"></span><span>Đăng ký nhận thông tin khuyến Mại</span>
+                    </h3>
+
+                    <form action="#" class="row g-3">
+                        <div class="col-auto">
+                            <input class="form-control" placeholder="Họ và tên" type="text">
+                        </div>
+                        <div class="col-auto">
+                            <input class="form-control" placeholder="Email" type="email">
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary">
+                                <span class="fa fa-paper-plane"></span>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-5 mb-5">
+            <div class="col-lg-4">
+                <div class="mb-4 footer-logo-wrap"><a class="footer-logo" href="#">Haven<span>.</span></a></div>
+                <p class="mb-4">Cảm ơn bạn đã tin tưởng ghé qua và lựa chọn Haven.</p>
+
+                <ul class="list-unstyled custom-social">
+                    <li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="row links-wrap">
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Liên hệ</a></li>
+                            <li><a href="#">Dịch vụ</a></li>
+                            <li><a href="#">Thông tin</a></li>
+                            <li><a href="#">Trung tâm trợ giúp</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Vận chuyển</a></li>
+                            <li><a href="#">Khu vực</a></li>
+                            <li><a href="#">Kênh bán hàng</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Hướng dẫn mua hàng</a></li>
+                            <li><a href="#">Đội ngũ</a></li>
+                            <li><a href="#">Trả hàng</a></li>
+                            <li><a href="#">Bảo mật</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Chăm sóc khách hàng</a></li>
+                            <li><a href="#">Chính sách bảo hành</a></li>
+                            <li><a href="#">Hoàn tiền</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-top copyright">
+            <div class="row pt-4">
+                <div class="col-lg-6">
+                    <p class="mb-2 text-center text-lg-start">Chủ sở hữu &copy;
+                        <script>document.write(new Date().getFullYear());</script> &mdash;
+                        Thiết kế tâm huyết của nhóm <a href="">SD-05</a> <a hreff=""></a>
+                        <!-- License information: https://untree.co/license/ -->
+                    </p>
+                </div>
+
+                <div class="col-lg-6 text-center text-lg-end">
+                    <ul class="list-unstyled d-inline-flex ms-auto">
+                        <li class="me-4"><a href="#">Dự án tốt nghiệp: </a></li>
+                        <li><a href="#">Xây dựng Website bán giày thể thao Haven</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</footer>
+<!-- End Footer Section -->
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
+     aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Thông báo</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade text-center" id="modalDialog"
+     data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #314d43;color: #ffff">
+                <h4 class="modal-title" id="modalTitle">Warning</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span id="modalBody"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/../js/customer/bootstrap.bundle.min.js"></script>
+<script src="/../js/customer/tiny-slider.js"></script>
+<script src="/../js/customer/custom.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+
+    function updateQuantityInDatabase(productId, quantity) {
+        $.ajax({
+            type: 'POST',
+            url: '/haven/cart/updateQuantity',
+            data: {idGioHangChiTiet: productId, soLuong: quantity},
+            success: function (response) {
+                // Handle the response, if needed
+                console.log('Update successful');
+            },
+            error: function (error) {
+                console.error('Error updating quantity:', error.responseText);
+            }
+        });
+    }
+
+
+    function updateQuantity(input) {
+        let quantity = input.value;
+
+        if (isNaN(quantity) || quantity < 1) {
+            // Display the modal
+            $('#quantityModal').modal('show');
+            // Reset the input value to 1
+            input.value = 1;
+            return;
+        }
+
+        let productId = input.parentElement.parentElement.parentElement.querySelector("input[type='checkbox']").value;
+
+        // Call the updateQuantityInDatabase function to update the quantity in the database
+        updateQuantityInDatabase(productId, quantity);
+
+        // Update the total price and any other necessary UI changes
+        updatePrice();
+    }
+
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        }).formatToParts(amount).map(part => {
+            if (part.type === 'currency') {
+                return ''; // Bỏ qua ký hiệu tiền tệ
+            }
+            return part.value;
+        }).join('');
+    }
+
+    function getTotalMoney() {
+        var checkboxes = document.querySelectorAll("tbody input[type='checkbox']");
+        let total = 0;
+        checkboxes.forEach(item => {
+            if (item.checked) {
+                let father = item.parentElement.parentElement.parentElement;
+                let price = father.querySelector(".thanhtienValue").value;
+                price = Number(price);
+                total += price;
+            }
+        })
+        return total;
+    }
+
+    function updatePrice() {
+        let totalE = document.querySelector(".total");
+        let price = getTotalMoney();
+        totalE.innerHTML = formatCurrency(price) + ' VND'; // Thêm ' VND' đằng sau giá trị
+    }
+
+    function handleChangeOfInput(input) {
+        let father = input.parentElement.parentElement.parentElement.parentElement;
+        let priceE = father.querySelector(".thanhtien");
+        let price = father.querySelector(".priceValue").value;
+        price = Number(price);
+
+        let qntE = father.querySelector(".quantity-amount");
+        let qnt = father.querySelector(".quantity-amount").value;
+        let maxQuantity = parseInt(father.querySelector(".quantity-amount").getAttribute('data-max-quantity'));
+
+        if (isNaN(qnt)) {
+            // Display the modal
+            showThongBaoModal("Nhập không đúng định dạng!");
+            input.value = 1;
+            return;
+        } else if (qnt < 1){
+            showThongBaoModal("Số lượng không được âm!");
+            input.value = 1;
+            return;
+        } else if (qnt > maxQuantity) {
+            showThongBaoModal("Vượt quá số lượng hiện có!");
+            input.value = 1;
+            return;
+        }
+
+        qntE.value = qnt;
+        father.querySelector(".thanhtienValue").value = price * qnt;
+        priceE.innerText = formatCurrency(price * qnt) + 'VND';
+
+        let checkBox = father.querySelector("input[type='checkbox']");
+        checkBox.checked && updatePrice();
+        updateQuantityInDatabase(checkBox.value, qnt);
+    }
+
+    function handlerChange(e) {
+        let className = e.getAttribute("class");
+        let father = e.parentElement.parentElement.parentElement.parentElement;
+        let priceE = father.querySelector(".thanhtien");
+        let price = father.querySelector(".priceValue").value;
+        price = Number(price);
+
+        let qntE = father.querySelector(".quantity-amount");
+        let qnt = father.querySelector(".quantity-amount").value;
+        let maxQuantity = parseInt(father.querySelector(".quantity-amount").getAttribute('data-max-quantity'));
+
+        if (className === "cong") {
+            qnt = Number(qnt) + 1;
+        } else if (className === "tru") {
+            qnt = Number(qnt) - 1;
+        }
+
+        // Validate quantity: should be a number greater than or equal to 1
+        if (isNaN(qnt) || qnt < 1) {
+            // Display the modal
+            showThongBaoModal("Số lượng không được âm!");
+            return;
+        }else if (qnt > maxQuantity){
+            showThongBaoModal("Vượt quá số lượng hiện có!");
+            return;
+        }
+
+        qntE.value = qnt;
+        father.querySelector(".thanhtienValue").value = price * qnt;
+        priceE.innerText = formatCurrency(price * qnt) + 'VND';
+
+        let checkBox = father.querySelector("input[type='checkbox']");
+        checkBox.checked && updatePrice();
+        updateQuantityInDatabase(checkBox.value, qnt);
+    }
+
+    function toggleCheckboxes(checkbox) {
+        // Lấy tất cả các ô checkbox trong tbody
+        var checkboxes = document.querySelectorAll("tbody input[type='checkbox']");
+
+        // Đặt trạng thái của các ô checkbox đằng sau bằng giá trị của ô checkbox đầu tiên
+        checkboxes.forEach(item => {
+            item.checked = checkbox.checked;
+            updatePrice();
+        });
+    }
+
+
+    document.querySelectorAll('.delete-button').forEach(function (button) {
+        button.addEventListener('click', function () {
+            let id = this.getAttribute('data-id');
+
+            // Show the confirmation modal
+            $('#deleteConfirmationModal').modal('show');
+
+            // Set up event listener for the delete button in the modal
+            document.getElementById('confirmDelete').addEventListener('click', function () {
+                // Redirect to the delete URL if the user confirms
+                window.location.href = '/haven/cart/xoa/' + id;
+
+                // Hide the modal after the action is taken
+                $('#deleteConfirmationModal').modal('hide');
+            });
+        });
+    });
+
+    function checkOut() {
+        let items = document.querySelectorAll("tbody input[type='checkbox']");
+        let isQuantityValid = true;
+
+        items.forEach(item => {
+            if (item.checked) {
+                let father = item.parentElement.parentElement.parentElement;
+                let quantity = parseInt(father.querySelector(".quantity-amount").value);
+                let maxQuantity = parseInt(father.querySelector(".quantity-amount").getAttribute('data-max-quantity'));
+
+                if (quantity > maxQuantity) {
+                    isQuantityValid = false;
+                    return;
+                }
+            }
+        });
+
+        // Nếu số lượng vượt quá số lượng tồn, hiển thị modal lỗi
+        if (!isQuantityValid) {
+            showThongBaoModal("Số lượng vượt quá số lượng tồn!");
+            return;
+        }
+
+        var checkboxes = document.querySelectorAll("input[name='options[]']");
+        // Mảng để lưu trữ giá trị của các checkbox được chọn
+        var selectedOptions = [];
+
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                // Nếu checkbox được chọn, thêm giá trị của nó vào mảng
+                selectedOptions.push(encodeURIComponent(checkbox.value));
+            }
+        });
+
+        if (selectedOptions.length === 0) {
+            // Thay vì sử dụng alert, hiển thị modal Bootstrap
+            showThongBaoModal("Vui lòng chọn sản phẩm bạn muốn mua!");
+            return; // Không chuyển hướng nếu không có checkbox nào được chọn
+        }
+
+        // Chuyển đến đường dẫn checkout và truyền giá trị mã hóa thông qua tham số
+        window.location.href = '/haven/cart/checkout?options=' + selectedOptions.join(',');
+    }
+</script>
+
+<script src="/js/admin/index_form.js"></script>
+</body>
+</html>

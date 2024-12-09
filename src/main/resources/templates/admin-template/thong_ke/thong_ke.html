@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8" />
+  <title>HAVEN</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta content="" name="keywords" />
+  <meta content="" name="description" />
+
+  <!-- Favicon -->
+  <link href="/../../images/WingMan-black.png" rel="icon">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css'>
+  <link rel='stylesheet' href='https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css'>
+  <style>
+    /* Đổi màu nền và màu chữ của các nút phân trang */
+    .pagination .page-link {
+      color: #000; /* Màu chữ đen */
+      background-color: #e9ecef; /* Nền xám nhạt */
+      border: 1px solid #c8cbcf; /* Viền màu xám nhạt */
+      border-radius: 0; /* Loại bỏ góc bo tròn */
+      margin: 0 2px; /* Điều chỉnh khoảng cách giữa các nút */
+      padding: 6px 12px; /* Điều chỉnh độ lớn của nút */
+    }
+
+    /* Đổi màu nền và màu chữ của nút khi được chọn hoặc hover */
+    .pagination .page-item.active .page-link,
+    .pagination .page-link:hover {
+      color: #000; /* Màu chữ đen khi hover hoặc nút được chọn */
+      background-color: #c8cbcf; /* Màu nền xám nhạt khi hover hoặc nút được chọn */
+      border: 1px solid #c8cbcf; /* Viền màu xám nhạt khi hover hoặc nút được chọn */
+    }
+
+    /* Table Styling */
+    #example {
+      font-family: Arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+      padding-top: 20px;
+    }
+
+    #example th {
+      background-color: #f2f2f2;
+      color: #333;
+      font-weight: bold;
+      border-bottom: 1px solid black;
+      padding: 8px;
+      text-align: center;
+
+    }
+
+    #example td {
+      padding: 8px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+      color: #6a6a6a;
+    }
+
+    #example tbody tr:hover {
+      background-color: #b3e1ff;
+    }
+
+    #example img {
+      vertical-align: middle;
+    }
+
+    /* Hide the footer */
+    tfoot[hidden] {
+      display: none;
+    }
+
+    /* hien thi icon them sửa xóa*/
+    .image-row {
+      display: flex; /* Sử dụng flexbox để xếp ảnh trên cùng một hàng */
+    }
+
+    .modal-body {
+      text-align: left;
+    }
+
+    /* Tùy chỉnh CSS để chuyển "Show entries" sang bên trái */
+    .dataTables_length {
+      float: left;
+    }
+
+    /* Di chuyển chuỗi "Showing x to y of N entries" sang bên trái */
+    .dataTables_info {
+      float: left;
+    }
+
+  </style>
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Icon Font Stylesheet -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- Libraries Stylesheet -->
+  <link href="/../../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+  <link href="/../../lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="/../../css/admin/bootstrap.min.css" rel="stylesheet" />
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css'>
+  <link rel='stylesheet' href='https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css'>
+  <!-- Template Stylesheet -->
+  <link href="/../../css/admin/style.css" rel="stylesheet" />
+</head>
+
+<body>
+<div class="container-xxl position-relative bg-white d-flex p-0">
+  <!-- Spinner Start -->
+  <div id="spinner"
+       class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+  <!-- Spinner End -->
+
+  <!-- Sidebar Start -->
+  <div class="sidebar pe-4 pb-3">
+    <nav class="navbar bg-light navbar-light">
+      <a th:href="@{/admin/ban-hang}" class="navbar-brand mx-4 mb-3">
+        <h3 class="text-primary"><i class="me-2"></i>Haven </h3>
+      </a>
+      <div class="d-flex align-items-center ms-4 mb-4">
+        <div class="position-relative">
+          <img class="rounded-circle" th:src="@{/img/userNew.png}" alt="" style="width: 40px; height: 40px;">
+          <div
+                  class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
+          </div>
+        </div>
+        <div class="ms-3">
+          <h6 class="mb-0" th:text="${tenNhanVien}"></h6>
+          <span>Admin</span>
+        </div>
+      </div>
+      <div class="navbar-nav w-100">
+        <a th:href="@{/admin/ban-hang}" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Bán
+          Hàng</a>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                  class="fa fa-laptop me-2"></i>Sản Phẩm</a>
+          <div class="dropdown-menu bg-transparent border-0">
+            <a th:href="@{/admin/san-pham}" class="dropdown-item">Sản Phẩm</a>
+            <a th:href="@{/admin/chi-tiet-san-pham}" class="dropdown-item">Chi Tiết Sản
+              Phẩm</a>
+<!--            <a th:href="@{/admin/dong-san-pham}" class="dropdown-item">Dòng Sản Phẩm</a>-->
+<!--            <a th:href="@{/admin/thuong-hieu}" class="dropdown-item">Thương Hiệu</a>-->
+<!--            <a th:href="@{/admin/mau-sac}" class="dropdown-item">Màu Sắc</a>-->
+<!--            <a th:href="@{/admin/kich-thuoc}" class="dropdown-item">Kích Thước</a>-->
+<!--            <a th:href="@{/admin/de-giay}" class="dropdown-item">Đế Giày</a>-->
+<!--            <a th:href="@{/admin/lot-giay}" class="dropdown-item">Lót Giày</a>-->
+<!--            <a th:href="@{/admin/co-giay}" class="dropdown-item ">Cổ Giày</a>-->
+          </div>
+        </div>
+        <a th:href="@{/admin/hoa-don}" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Hóa Đơn</a>
+        <a th:href="@{/admin/khach-hang}" class="nav-item nav-link"><i
+                class="fa fa-user me-2"></i>Khách Hàng</a>
+<!--        <a th:href="@{/admin/nhan-vien}" class="nav-item nav-link"><i class="fa fa-user me-2"></i>Nhân-->
+<!--          Viên</a>-->
+        <a th:href="@{/admin/khuyen-mai}" class="nav-item nav-link"><i
+                class="fa fa-chart-bar me-2"></i>Khuyến Mại</a>
+        <a th:href="@{/admin/ma-giam-gia}" class="nav-item nav-link"><i
+                class="fa fa-chart-bar me-2"></i>Mã Giảm Giá</a>
+        <a th:href="@{/admin/thong-ke}" class="nav-item nav-link active"><i
+                class="fa fa-chart-bar me-2"></i>Thống Kê</a>
+      </div>
+    </nav>
+  </div>
+  <!-- Sidebar End -->
+
+
+  <!-- Content Start -->
+  <div class="content">
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+      <a aa href="/../ban_hang/ban_hang.html" class="navbar-brand d-flex d-lg-none me-4">
+        <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+      </a>
+      <a href="#" class="sidebar-toggler flex-shrink-0">
+        <i class="fa fa-bars"></i>
+      </a>
+      <div class="navbar-nav align-items-center ms-auto">
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            <img class="rounded-circle me-lg-2" th:src="@{/img/userNew.png}" alt="" style="width: 40px; height: 40px;">
+
+          </a>
+          <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+
+            <a th:href="@{/logout}" class="dropdown-item">Đăng xuất</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Navbar End -->
+    <div class="container-fluid pt-4 px-4">
+      <div id="errorMessageDate"></div>
+
+      <form th:action="@{/admin/thong-ke}" method="get" onsubmit="return validateDate()">
+        <div class="container-fluid pt-3">
+          <input type="hidden" id="hiddenTrangThai" name="trangThai" th:value="${trangThai}"/>
+
+          <div class="row g-2">
+            <div class="col-md-4">
+              <!-- Ngày bắt đầu -->
+              <label class="sr-only" for="start7">Ngày bắt đầu</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">Ngày bắt đầu</div>
+                </div>
+                <input type="date" class="form-control" name="startDate" id="start7"
+                       th:value="${startDate}">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <!-- Ngày kết thúc -->
+              <label class="sr-only" for="end7">Ngày kết thúc</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">Ngày kết thúc</div>
+                </div>
+                <input type="date" class="form-control" name="endDate" id="end7" th:value="${endDate}">
+              </div>
+            </div>
+            <div class="col-md-2" style="padding-bottom: 5px">
+              <!-- Button thứ nhất -->
+              <button type="submit" class="btn btn-outline-info" style="width: 100%"><i class="bi bi-search"></i>Tìm kiếm</button>
+            </div>
+<!--            <div class="col-md-2" style="padding-bottom: 5px">-->
+<!--              &lt;!&ndash; Button thứ hai &ndash;&gt;-->
+<!--              <a class="btn btn-outline-info" href="/admin/thong-ke"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">-->
+<!--                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>-->
+<!--                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>-->
+<!--              </svg>Làm mới</a>-->
+<!--            </div>-->
+          </div>
+        </div>
+
+      </form>
+
+      <div class="d-flex justify-content-start" style="margin-top: 30px">
+        <form th:action="@{/admin/thong-ke/export}" method="get">
+          <button type="submit" class="btn btn-success" style="margin-right: 30px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-exe" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM2.575 15.202H.785v-1.073H2.47v-.606H.785v-1.025h1.79v-.648H0v3.999h2.575zM6.31 11.85h-.893l-.823 1.439h-.036l-.832-1.439h-.931l1.227 1.983-1.239 2.016h.861l.853-1.415h.035l.85 1.415h.908l-1.254-1.992zm1.025 3.352h1.79v.647H6.548V11.85h2.576v.648h-1.79v1.025h1.684v.606H7.334v1.073Z"/>
+          </svg>Xuất Hoá Đơn</button>
+        </form>
+<!--        <form th:action="@{/admin/thong-ke/export-hoan-tra}" method="get">-->
+<!--          <button type="submit" class="btn btn-success"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filetype-exe" viewBox="0 0 16 16">-->
+<!--            <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zM2.575 15.202H.785v-1.073H2.47v-.606H.785v-1.025h1.79v-.648H0v3.999h2.575zM6.31 11.85h-.893l-.823 1.439h-.036l-.832-1.439h-.931l1.227 1.983-1.239 2.016h.861l.853-1.415h.035l.85 1.415h.908l-1.254-1.992zm1.025 3.352h1.79v.647H6.548V11.85h2.576v.648h-1.79v1.025h1.684v.606H7.334v1.073Z"/>-->
+<!--          </svg>Xuất Sản Phẩm Hoàn Trả</button>-->
+<!--        </form>-->
+      </div>
+
+
+
+      <br>
+      <br>
+      <div class="row g-4">
+        <div class="col-sm-6 col-xl-4">
+          <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+            <i class="fa fa-chart-line fa-3x text-primary"></i>
+            <div class="ms-3">
+              <p class="mb-2">Doanh thu</p>
+              <h6 class="mb-0" th:text="${#numbers.formatDecimal(doanhThu != null ? doanhThu : 0, 0, 'POINT', 0, 'COMMA') + ' VND'}"></h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl-4">
+          <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+            <i class="fa fa-chart-bar fa-3x text-primary"></i>
+            <div class="ms-3">
+              <p class="mb-2">Số đơn hủy</p>
+              <h6 class="mb-0" th:text="${soDonHuy}"></h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl-4">
+          <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+            <i class="fa fa-chart-area fa-3x text-primary"></i>
+            <div class="ms-3">
+              <p class="mb-2">Số sản phẩm hoàn trả</p>
+              <h6 class="mb-0" th:text="${hoanTra != null and hoanTra != '' ? hoanTra : '0'}"></h6>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="container-fluid pt-4 px-4">
+      <div class="row g-4">
+        <!--            biểu đồ doanh thu-->
+
+        <div class="col-sm-12 col-xl-12">
+          <div class="bg-light rounded h-100 p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <h5 class="m-0">Doanh thu</h5>
+              <div class="custom-select-wrapper">
+                <select id="selectType" class="custom-select">
+                  <option value="daily">Ngày</option>
+                  <option value="monthly">Tháng</option>
+                  <option value="yearly">Năm</option>
+                </select>
+              </div>
+            </div>
+            <style>
+              .custom-select {
+                display: inline-block;
+                padding: 8px 12px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                background-color: #fff;
+                color: #333;
+                appearance: none; /* Loại bỏ giao diện mặc định */
+              }
+
+              .custom-select:hover {
+                border-color: #aaa;
+              }
+
+              .custom-select:focus {
+                outline: none;
+                border-color: #555;
+              }
+
+            </style>
+
+            <canvas id="myChart" style="width: 70%; height: 200px;"></canvas>
+          </div>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+          <div class="bg-light rounded h-100 p-4">
+<!--            biẻu đồ tròn hoá đơn-->
+            <div id="container3" ></div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-xl-6">
+          <div class="bg-light rounded h-100 p-4">
+<!--            biểu đồ thống kê sl bán chạy-->
+            <div id="container2" style="width: 100%"></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid pt-4">
+      <div class="bg-light text-center rounded p-4">
+        <div>
+          <div class="bg-light rounded h-100 p-4">
+            <style>
+              /* Trong một tệp CSS hoặc trong một thẻ style ở đầu trang HTML */
+              .custom-table {
+                width: 100%;
+                border-collapse: collapse;
+              }
+
+              .custom-table th,
+              .custom-table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+              }
+
+              .custom-table th {
+                background-color: #f2f2f2;
+                color: #333;
+              }
+
+              .custom-table tbody tr:nth-child(even) {
+                background-color: #f9f9f9;
+              }
+
+              .custom-table tbody tr:hover {
+                background-color: #e9e9e9;
+              }
+
+              /* Để ẩn footer của bảng */
+              tfoot[hidden] {
+                display: none;
+              }a {
+                 text-decoration: none;
+               }
+
+            </style>
+            <h5><strong>Danh Sách Hoá Đơn</strong></h5>
+            <table id="example" class="table table-striped" style="width:100%">
+              <thead>
+              <tr>
+                <th>STT</th>
+                <th>Mã</th>
+                <th>Tên Khách Hàng</th>
+                <th>Hình Thức Mua Hàng</th>
+                <th>Trạng Thái</th>
+                <th>Thanh Toán</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="hd,state : ${hoadons}">
+                <td>
+                  <a th:if="${(hd.loaiHoaDon == T(com.example.befall23datnsd05.enumeration.LoaiHoaDon).HOA_DON_OFFLINE)}"
+                     th:href="@{'/admin/thong-ke/chi-tiet-hoa-don/' + ${hd.id}}" th:text="${state.index+1}"
+                     style="color: black;"></a>
+                  <a th:if="${(hd.loaiHoaDon == T(com.example.befall23datnsd05.enumeration.LoaiHoaDon).HOA_DON_ONLINE)}"
+                     th:href="@{'/admin/thong-ke/chi-tiet-gio-hang/' + ${hd.id}}" th:text="${state.index+1}"
+                     style="color: black;"></a>
+                </td>
+                <td>
+                  <a th:if="${(hd.loaiHoaDon == T(com.example.befall23datnsd05.enumeration.LoaiHoaDon).HOA_DON_OFFLINE)}"
+                     th:href="@{'/admin/thong-ke/chi-tiet-hoa-don/' + ${hd.id}}" th:text="${hd.ma}"
+                     style="color: black;"></a>
+                  <a th:if="${(hd.loaiHoaDon == T(com.example.befall23datnsd05.enumeration.LoaiHoaDon).HOA_DON_ONLINE)}"
+                     th:href="@{'/admin/thong-ke/chi-tiet-gio-hang/' + ${hd.id}}" th:text="${hd.ma}"
+                     style="color: black;"></a>
+                </td>
+                <td>
+                  <a th:if="${(hd.loaiHoaDon == T(com.example.befall23datnsd05.enumeration.LoaiHoaDon).HOA_DON_OFFLINE)}"
+                     th:href="@{'/admin/thong-ke/chi-tiet-hoa-don/' + ${hd.id}}" th:text="${hd.khachHang.ten}"
+                     style="color: black;"></a>
+                  <a th:if="${(hd.loaiHoaDon == T(com.example.befall23datnsd05.enumeration.LoaiHoaDon).HOA_DON_ONLINE)}"
+                     th:href="@{'/admin/thong-ke/chi-tiet-gio-hang/' + ${hd.id}}" th:text="${hd.khachHang.ten}"
+                     style="color: black;"></a>
+                </td>
+                <td>
+                  <a th:if="${(hd.loaiHoaDon == T(com.example.befall23datnsd05.enumeration.LoaiHoaDon).HOA_DON_OFFLINE)}"
+                     th:href="@{'/admin/thong-ke/chi-tiet-hoa-don/' + ${hd.id}}"
+                     th:text="${hd.loaiHoaDon.getDisplayName()}"
+                     style="color: black;"></a>
+                  <a th:if="${(hd.loaiHoaDon == T(com.example.befall23datnsd05.enumeration.LoaiHoaDon).HOA_DON_ONLINE)}"
+                     th:href="@{'/admin/thong-ke/chi-tiet-gio-hang/' + ${hd.id}}"
+                     th:text="${hd.loaiHoaDon.getDisplayName()}"
+                     style="color: black;"></a>
+                </td>
+                <td>
+                  <a th:if="${(hd.loaiHoaDon == T(com.example.befall23datnsd05.enumeration.LoaiHoaDon).HOA_DON_OFFLINE)}"
+                     th:href="@{'/admin/thong-ke/chi-tiet-hoa-don/' + ${hd.id}}"
+                     th:text="${hd.trangThai.getDisplayName()}"
+                     style="color: black;"></a>
+                  <a th:if="${(hd.loaiHoaDon == T(com.example.befall23datnsd05.enumeration.LoaiHoaDon).HOA_DON_ONLINE)}"
+                     th:href="@{'/admin/thong-ke/chi-tiet-gio-hang/' + ${hd.id}}"
+                     th:text="${hd.trangThai.getDisplayName()}"
+                     style="color: black;"></a>
+                </td>
+                <td>
+                  <a th:if="${(hd.loaiHoaDon == T(com.example.befall23datnsd05.enumeration.LoaiHoaDon).HOA_DON_OFFLINE)}"
+                     th:href="@{'/admin/hoa-don/chi-tiet-hoa-don/' + ${hd.id}}"
+                     th:text="${#numbers.formatDecimal(hd.thanhToan ?: 0, 0, 'POINT', 0, 'COMMA')} + ' VND'"
+                     style="color: black;"></a>
+                  <a th:if="${(hd.loaiHoaDon == T(com.example.befall23datnsd05.enumeration.LoaiHoaDon).HOA_DON_ONLINE)}"
+                     th:href="@{'/admin/hoa-don/chi-tiet-gio-hang/' + ${hd.id}}"
+                     th:text="${#numbers.formatDecimal(hd.thanhToan ?: 0, 0, 'POINT', 0, 'COMMA')} + ' VND'"
+                     style="color: black;"></a>
+                </td>
+              </tr>
+              </tbody>
+              <tfoot hidden="hidden">
+              <tr>
+                <th>STT</th>
+                <th>Mã</th>
+                <th>Tên Khách Hàng</th>
+                <th>Ngày Tạo</th>
+                <th>Trạng Thái</th>
+                <th>Thanh Toán</th>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart End -->
+    <!-- Footer Start -->
+    <div class="container-fluid pt-4">
+      <div class="bg-light rounded-top p-4">
+        <div class="row">
+          <p style="text-align: center; padding-top: 35px; font-size: 25px;">Giày Thể Thao Haven</p>
+        </div>
+      </div>
+    </div>
+    <!-- Footer End -->
+  </div>
+  <!-- Content End -->
+
+  <!-- Back to Top -->
+  <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/../../lib/chart/chart.min.js"></script>
+<script src="/../../lib/easing/easing.min.js"></script>
+<script src="/../../lib/waypoints/waypoints.min.js"></script>
+<script src="/../../lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="/../../lib/tempusdominus/js/moment.min.js"></script>
+<script src="/../../lib/tempusdominus/js/moment-timezone.min.js"></script>
+<script src="/../../lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<!-- Template Javascript -->
+<script src="/../../js/admin/main.js"></script>
+
+<script th:inline="javascript">
+<!--  thống kê loại hoá đơn-->
+    var dataForChart = [[${listHd}]] ;
+    var modifiedData = Object.keys(dataForChart).reduce(function (acc, key) {
+        var name = key;
+        if (key === '6') {
+            name = 'Đã Huỷ';
+        } else if (key === '5') {
+            name = 'Hoàn Thành';
+        }else if (key === '4') {
+          name = 'Đang Giao';
+        }
+
+        if (name === 'Đang Giao' || name === 'Hoàn Thành'||name === 'Đã Huỷ') {
+            acc.push({
+                name: name,
+                y: dataForChart[key]
+            });
+        } else {
+            if (acc.some(item => item.name === 'Khác')) {
+                acc.find(item => item.name === 'Khác').y += dataForChart[key];
+            } else {
+                acc.push({
+                    name: 'Khác',
+                    y: dataForChart[key]
+                });
+            }
+        }
+        return acc;
+    }, []);
+    Highcharts.chart('container3', {
+        chart: {
+            type: 'pie'
+        },
+        title: {
+            text: ' Thống Kê Các loại hoá đơn'
+        },
+        subtitle: {
+            text: 'Số lượng các loại hóa đơn'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        series: [{
+            name: 'Số lượng',
+            colorByPoint: true,
+            data: modifiedData
+        }]
+    });
+    //
+    var dataForChart1 = [[${listHdct}]];
+document.addEventListener('DOMContentLoaded', function () {
+  var chart = Highcharts.chart('container2', {
+    // Your Highcharts configuration options here
+    chart: {
+      type: 'bar'
+    },
+    title: {
+      text: 'Các Sản Phẩm Được Bán Nhiều Nhất'
+    },
+    xAxis: {
+      categories: Object.keys(dataForChart1) // Assuming keys are categories/names
+    },
+    yAxis: {
+      title: {
+        text: 'Số Lượng'
+      }
+    },
+    series: [{
+      name: 'Số Lượng',
+      data: Object.entries(dataForChart1).map(([category, value], index) => ({
+        name: category,
+        y: value,
+        color: getColorByIndex(index) // Function to get different colors for each bar
+      }))
+    }]
+  });
+
+  function getColorByIndex(index) {
+    var colors = ['#990000', '#507a50', '#7f7fb1', '#a97c31', '#800080', '#FFFF00'];
+    return colors[index % colors.length];
+  }
+});
+    //doanh thu
+var doanhThuMap = [[${listThongKe}]];
+var labels = [];
+var data = [];
+for (var key in doanhThuMap) {
+  if (doanhThuMap.hasOwnProperty(key)) {
+    labels.push(key);
+    data.push(doanhThuMap[key]);
+  }
+}
+
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'Doanh Thu',
+      data: data,
+      borderColor: 'rgb(41,111,193)',
+      borderWidth: 1,
+      fill: false
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Doanh Thu'
+    }
+  }
+});
+
+// Thêm sự kiện người dùng thay đổi selection
+document.getElementById('selectType').addEventListener('change', function() {
+  var selectedType = this.value;
+  var newData = [];
+  var newLabels = [];
+
+  if (selectedType === 'daily') {
+    newData = data;
+    newLabels = labels;
+  } else if (selectedType === 'monthly') {
+    var monthlyData = {};
+    for (var i = 0; i < labels.length; i++) {
+      var date = new Date(labels[i]);
+      var month = date.getMonth() + 1;
+      var year = date.getFullYear();
+      var key = month + '-' + year;
+
+      if (!monthlyData[key]) {
+        monthlyData[key] = 0;
+      }
+
+      monthlyData[key] += data[i];
+    }
+
+    for (var monthKey in monthlyData) {
+      newLabels.push(monthKey);
+      newData.push(monthlyData[monthKey]);
+    }
+  } else if (selectedType === 'yearly') {
+    var yearlyData = {};
+    for (var j = 0; j < labels.length; j++) {
+      var yearLabel = new Date(labels[j]).getFullYear();
+
+      if (!yearlyData[yearLabel]) {
+        yearlyData[yearLabel] = 0;
+      }
+
+      yearlyData[yearLabel] += data[j];
+    }
+
+    for (var yearKey in yearlyData) {
+      newLabels.push(yearKey);
+      newData.push(yearlyData[yearKey]);
+    }
+  }
+
+  myChart.data.labels = newLabels;
+  myChart.data.datasets[0].data = newData;
+  myChart.update();
+});
+
+</script>
+<script th:inline="javascript">
+  function validateDate() {
+    var startDate = document.getElementById('start7').value;
+    var endDate = document.getElementById('end7').value;
+    var errorMessageDate = document.getElementById('errorMessageDate');
+    if (!endDate) {
+      // Lấy ngày hiện tại dưới dạng chuỗi YYYY-MM-DD
+      var currentDate = new Date().toISOString().split('T')[0];
+      // Gán giá trị mặc định cho endDateElement
+      endDateElement.value = currentDate;
+    }
+    // Lấy ngày hiện tại
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+    var yyyy = today.getFullYear();
+    var currentDate = yyyy + '-' + mm + '-' + dd;
+
+    if (startDate > endDate) {
+      errorMessageDate.innerHTML = '<div class="alert alert-danger" role="alert">Ngày bắt đầu không thể lớn hơn ngày kết thúc.</div>';
+    } else if (startDate > currentDate) {
+      errorMessageDate.innerHTML = '<div class="alert alert-danger" role="alert">Ngày bắt đầu không thể lớn hơn ngày hiện tại.</div>';
+    } else if (endDate > currentDate) {
+      errorMessageDate.innerHTML = '<div class="alert alert-danger" role="alert">Ngày kết thúc không thể lớn hơn ngày hiện tại.</div>';
+    } else {
+      errorMessageDate.innerHTML = ''; // Xóa thông báo lỗi nếu đã được hiển thị
+      return true; // Cho phép form submit nếu không có lỗi
+    }
+
+    // Tự động ẩn thông báo sau 5 giây
+    setTimeout(function () {
+      errorMessageDate.innerHTML = '';
+    }, 5000);
+
+    return false; // Ngăn form từ việc submit khi có lỗi
+  }
+
+  // Function to hide the error message after 5 seconds
+  setTimeout(function() {
+    var errorMessageDate = document.getElementById('errorMessageDate');
+    if (errorMessageDate) {
+      errorMessageDate.innerHTML = '';
+    }
+  }, 5000); // 5000 milliseconds = 5 seconds
+</script>
+<script>
+  new DataTable('#example1');
+  new DataTable('#example2');
+</script>
+<script>
+  $(document).ready(function () {
+    $('#example').DataTable();
+  })
+  $(document).ready(function () {
+    $('#example1').DataTable();
+  })
+</script>
+<script src='https://code.jquery.com/jquery-3.7.0.js'></script>
+<script src='https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js'></script>
+<script src='https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js'></script>
+
+<script>
+
+    });
+
+    // Bắt sự kiện click của nút submit
+    $('form button[type="submit"]').click(function(event) {
+      event.preventDefault(); // Ngăn chặn hành động mặc định của nút submit
+      var form = $(this).closest('form'); // Lấy form gần nhất của nút submit
+
+      // Submit form
+      form.submit();
+    });
+  });
+</script>
+
+
+
+
+
+
+
+</body>
+
+</html>
